@@ -8,6 +8,8 @@ import home from './components/home.vue';
 import 'iview/dist/styles/iview.css';
 import { locale } from 'iview';
 import lang from 'iview/dist/locale/en-US';
+import PartyPanel from './components/PartyPanel.vue'
+import PartyDetails from './components/PartyDetails.vue'
 locale(lang);
 
 Vue.prototype.$axios = axios;
@@ -19,7 +21,13 @@ const router = new VueRouter({
         { path: '/', component: App },
         { path: '/test', component: test },
         { path: '/login', component: login },
-        { path: '/home', component: home }
+        {
+            path: '/home', component: home,
+            children: [
+                { path: '', component: PartyPanel },
+                { path: 'partydetails', component: PartyDetails}
+            ]
+        }
     ]
 });
 

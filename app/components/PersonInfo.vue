@@ -1,6 +1,12 @@
 <template>
   <div>
-    <Modal v-model="modal1" width="600px" title="Edit Personal Info" @on-ok="updateInfo">
+    <Modal
+      v-model="modal1"
+      :mask-closable="false"
+      width="600px"
+      title="Edit Personal Information"
+      @on-ok="updateInfo"
+    >
       <Input v-model="name" class="input" size="large" placeholder="Name"/>
       <RadioGroup class="input" v-model="gender">
         <Radio label="1">
@@ -20,7 +26,7 @@
         class="input"
         v-model="hobby"
         multiple
-        style="width:300px;padding-left:3px"
+        style="width:300px;padding-left:1px"
         placeholder="Select hobbies"
       >
         <Option v-for="item in hobbylist" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -30,7 +36,7 @@
         class="input"
         type="date"
         placeholder="Select date"
-        style="width:300px;padding-left:3px"
+        style="width:300px;padding-left:1px"
       ></DatePicker>
     </Modal>
   </div>

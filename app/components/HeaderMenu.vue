@@ -30,7 +30,7 @@ export default {
     Icon,
     Submenu,
     MenuGroup,
-    PersonInfo
+    PersonInfo,
   },
   data() {
     return {

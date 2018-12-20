@@ -1,6 +1,7 @@
 <template>
     <div>
         <header-menu></header-menu>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -10,7 +11,7 @@ import { getUserEmail } from "../utils/cognito";
 
 export default {
     components:{
-        HeaderMenu
+        HeaderMenu,
     },
     created(){
         if(!getUserEmail()){

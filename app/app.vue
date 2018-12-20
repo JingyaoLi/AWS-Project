@@ -15,7 +15,7 @@ export default {
   created() {
     getCurrentUser()
       .then(r => {
-        this.$router.push('/home');
+        // this.$router.push('/home');
       })
       .catch(j => {
         this.$router.push('/login');
