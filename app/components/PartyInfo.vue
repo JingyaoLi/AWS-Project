@@ -42,7 +42,7 @@
 
 <script>
 import { getUserEmail } from "../utils/cognito";
-import { testApi } from "../utils/data";
+import { createPartyDb } from "../utils/data";
 
 import {
   Modal,
@@ -55,6 +55,7 @@ import {
   Option,
   DatePicker,
   TimePicker,
+  Message
 } from "iview";
 
 export default {
@@ -69,6 +70,7 @@ export default {
     Option,
     DatePicker,
     TimePicker,
+    Message
   },
   created() {
     this.modal2 = this.show;
@@ -79,7 +81,7 @@ export default {
     return {
       modal2: false,
       name: null,
-      startdatetime: "2019-01-01T18:00:00.000Z",
+      startdatetime: null,
       enddatetime: null,
       num: null,
       location: null,
@@ -101,6 +103,14 @@ export default {
         {
           value: "Game",
           label: "Game"
+        },
+        {
+          value: "Study",
+          label: "Study"
+        },
+        {
+          value: "Sport",
+          label: "Sport"
         }
       ],
       hobby: []
@@ -114,15 +124,22 @@ export default {
   methods: {
     createParty() {
       let param = {
-        email: this.email,
+        hostEmail: this.email,
         name: this.name,
-        startdatetime: this.startdatetime,
-        enddatetime: this.enddatetime,
-        num: this.num,
-        location: this.num,
-        discription: this.discription
+        startTime: this.startdatetime,
+        endTime: this.enddatetime,
+        maxNumber: this.num,
+        address: this.location,
+        discription: this.discription,
+        category: this.hobby
       };
-      console.log(param);
+      createPartyDb(param).then(r => {
+        console.log(r);
+        Message.success({
+          content: "Create party successfully",
+          duration: 3
+        });
+      });
     }
   }
 };

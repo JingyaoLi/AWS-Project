@@ -78,8 +78,15 @@
 </template>
 
 <script>
-import { Register, Confrim, Signin, getCurrentUser, getUserEmail } from "../utils/cognito";
+import {
+  Register,
+  Confrim,
+  Signin,
+  getCurrentUser,
+  getUserEmail
+} from "../utils/cognito";
 import { Modal, Icon, Button, Input, Message } from "iview";
+import { SignUpDb } from "../utils/data";
 
 export default {
   components: {
@@ -92,11 +99,11 @@ export default {
   created() {
     getCurrentUser()
       .then(r => {
-        this.$router.push('/home');
+        this.$router.push("/home");
       })
       .catch(j => {
         Message.warning({
-          content: 'Please Login',
+          content: "Please Login",
           duration: 3
         });
       });
@@ -141,6 +148,10 @@ export default {
           Message.success({
             content: r,
             duration: 3
+          });
+          SignUpDb({
+            userName: this.name,
+            userEmail: this.email
           });
           this.confir = true;
           this.confirbtn = true;
@@ -195,7 +206,7 @@ export default {
             content: r,
             duration: 3
           });
-          this.$router.push('/home');
+          this.$router.push("/home");
         })
         .catch(j => {
           Message.error({

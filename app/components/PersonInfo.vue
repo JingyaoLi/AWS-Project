@@ -9,11 +9,11 @@
     >
       <Input v-model="name" class="input" size="large" placeholder="Name"/>
       <RadioGroup class="input" v-model="gender">
-        <Radio label="1">
+        <Radio label="male">
           <Icon type="md-male"/>
           <span>Boy</span>
         </Radio>
-        <Radio label="2">
+        <Radio label="female">
           <Icon type="md-female"/>
           <span>Girl</span>
         </Radio>
@@ -33,7 +33,7 @@
         v-model="birthday"
         class="input"
         type="date"
-        placeholder="Select date"
+        placeholder="Select birthday"
         style="width:300px;padding-left:1px"
       ></DatePicker>
     </Modal>
@@ -50,10 +50,12 @@ import {
   InputNumber,
   Select,
   Option,
-  DatePicker
+  DatePicker,
+  Message
 } from "iview";
 
 import { getUserEmail } from "../utils/cognito";
+import { getUserInfo, updataUserInfo } from "../utils/data";
 
 export default {
   components: {
@@ -65,10 +67,25 @@ export default {
     InputNumber,
     Select,
     Option,
-    DatePicker
+    DatePicker,
+    Message
   },
   created() {
     this.email = getUserEmail();
+    getUserInfo({ email: this.email }).then(r => {
+      if (r["data"]["body"]["name"]) {
+        this.name = r["data"]["body"]["name"];
+      }
+      if (r["data"]["body"]["gender"]) {
+        this.gender = r["data"]["body"]["gender"];
+      }
+      if (r["data"]["body"]["hobby"]) {
+        this.hobby = r["data"]["body"]["hobby"];
+      }
+      if (r["data"]["body"]["birthday"]) {
+        this.birthday = r["data"]["body"]["birthday"];
+      }
+    });
   },
   props: ["show"],
   data() {
@@ -77,7 +94,6 @@ export default {
       modal1: this.show,
       name: null,
       gender: null,
-      age: null,
       hobbylist: [
         {
           value: "Dance",
@@ -94,6 +110,14 @@ export default {
         {
           value: "Game",
           label: "Game"
+        },
+        {
+          value: "Study",
+          label: "Study"
+        },
+        {
+          value: "Sport",
+          label: "Sport"
         }
       ],
       hobby: [],
@@ -106,11 +130,16 @@ export default {
         email: this.email,
         name: this.name,
         gender: this.gender,
-        age: this.age,
         hobby: this.hobby,
-        birthday: this.birthday
+        birthday: this.birthday,
+        phone_number: 'N/A'
       };
-      console.log(params);
+      updataUserInfo(params).then(r => {
+        Message.success({
+          content: "Update successfully",
+          duration: 3
+        });
+      });
     }
   },
   watch: {

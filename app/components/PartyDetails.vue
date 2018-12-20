@@ -62,6 +62,7 @@
 
 <script>
 import { getUserEmail } from "../utils/cognito";
+import { getParty } from '../utils/data';
 import EditParty from "./EditParty.vue";
 import { Col, Card, Icon, Cell, CellGroup, Button, Rate, Message } from "iview";
 export default {
