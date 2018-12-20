@@ -56,7 +56,14 @@
         >Confirm</Button>
       </div>
       <div slot="footer" v-show="login_footer">
-        <Button class="button" type="primary" size="large" long :loading="modal_loading1">Sign in</Button>
+        <Button
+          class="button"
+          type="primary"
+          size="large"
+          long
+          :loading="modal_loading1"
+          @click="signin"
+        >Sign in</Button>
         <Button
           class="button"
           type="primary"
@@ -71,7 +78,7 @@
 </template>
 
 <script>
-import { Register, Confrim } from "../utils/cognito";
+import { Register, Confrim, Signin, getCurrentUser, getUserEmail } from "../utils/cognito";
 import { Modal, Icon, Button, Input, Message } from "iview";
 
 export default {
@@ -82,7 +89,18 @@ export default {
     Input,
     Message
   },
-  created() {},
+  created() {
+    getCurrentUser()
+      .then(r => {
+        this.$router.push('/home');
+      })
+      .catch(j => {
+        Message.warning({
+          content: 'Please Login',
+          duration: 3
+        });
+      });
+  },
   data() {
     return {
       modal1: true,
@@ -108,12 +126,12 @@ export default {
     signup() {
       if (!this.name || !this.name || !this.name) {
         Message.warning({
-          content: "please enter your info completly",
+          content: "please enter your info completely",
           duration: 3
         });
         return;
       }
-      let param = {
+      const param = {
         name: this.name,
         email: this.email,
         password: this.password
@@ -122,7 +140,7 @@ export default {
         .then(r => {
           Message.success({
             content: r,
-            duration: 5
+            duration: 3
           });
           this.confir = true;
           this.confirbtn = true;
@@ -134,7 +152,6 @@ export default {
           });
         });
     },
-
     confirm() {
       if (!this.confirmation) {
         Message.warning({
@@ -143,20 +160,49 @@ export default {
         });
         return;
       }
-      Confrim(this.email, this.confirmation).then(r=>{
-        Message.success({
+      Confrim(this.email, this.confirmation)
+        .then(r => {
+          Message.success({
             content: r,
-            duration: 5
-        });
-        this.confir = false;
-        this.confirbtn = false;
-        this.switch_();
-      }).catch(j=>{
-        Message.error({
+            duration: 3
+          });
+          this.confir = false;
+          this.confirbtn = false;
+          this.switch_();
+        })
+        .catch(j => {
+          Message.error({
             content: j,
             duration: 5
+          });
         });
-      })
+    },
+    signin() {
+      if (!this.email || !this.password) {
+        Message.warning({
+          content: "please enter your info completely",
+          duration: 3
+        });
+        return;
+      }
+      const param = {
+        email: this.email,
+        password: this.password
+      };
+      Signin(param)
+        .then(r => {
+          Message.success({
+            content: r,
+            duration: 3
+          });
+          this.$router.push('/home');
+        })
+        .catch(j => {
+          Message.error({
+            content: j,
+            duration: 5
+          });
+        });
     }
   }
 };
