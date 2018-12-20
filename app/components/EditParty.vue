@@ -7,15 +7,6 @@
       @on-ok="createParty"
     >
       <Input v-model="name" class="input" size="large" placeholder="Name"/>
-      <Select
-        class="input"
-        v-model="hobby"
-        multiple
-        style="width:300px;padding-left:1px"
-        placeholder="Categroy"
-      >
-        <Option v-for="item in hobbylist" :value="item.value" :key="item.value">{{ item.label }}</Option>
-      </Select>
       <DatePicker
         v-model="startdatetime"
         class="input"
@@ -30,10 +21,6 @@
         placeholder="End date"
         style="width:300px;padding-left:1px"
       ></DatePicker>
-      <div style="padding-left:6px">
-        <span>Number of people:</span>
-        <InputNumber class="input" :max="200" :min="0" v-model="num"></InputNumber>
-      </div>
       <Input v-model="location" class="input" size="large" placeholder="Location"/>
       <Input v-model="discription" class="input" size="large" placeholder="Discription"/>
     </Modal>
@@ -54,7 +41,7 @@ import {
   Select,
   Option,
   DatePicker,
-  TimePicker,
+  TimePicker
 } from "iview";
 
 export default {
@@ -68,7 +55,7 @@ export default {
     Select,
     Option,
     DatePicker,
-    TimePicker,
+    TimePicker
   },
   created() {
     this.modal2 = this.show;
@@ -85,25 +72,6 @@ export default {
       location: null,
       discription: null,
       email: null,
-      hobbylist: [
-        {
-          value: "Dance",
-          label: "Dance"
-        },
-        {
-          value: "Singing",
-          label: "Singing"
-        },
-        {
-          value: "Reading",
-          label: "Reading"
-        },
-        {
-          value: "Game",
-          label: "Game"
-        }
-      ],
-      hobby: []
     };
   },
   watch: {

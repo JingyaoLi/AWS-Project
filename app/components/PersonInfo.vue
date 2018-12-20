@@ -18,19 +18,17 @@
           <span>Girl</span>
         </Radio>
       </RadioGroup>
-      <div style="padding-left:6px">
-        <span>Age:</span>
-        <InputNumber class="input" :max="100" :min="0" v-model="age"></InputNumber>
+      <div>
+        <Select
+          class="input"
+          v-model="hobby"
+          multiple
+          style="width:300px;padding-left:1px"
+          placeholder="Select hobbies"
+        >
+          <Option v-for="item in hobbylist" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
       </div>
-      <Select
-        class="input"
-        v-model="hobby"
-        multiple
-        style="width:300px;padding-left:1px"
-        placeholder="Select hobbies"
-      >
-        <Option v-for="item in hobbylist" :value="item.value" :key="item.value">{{ item.label }}</Option>
-      </Select>
       <DatePicker
         v-model="birthday"
         class="input"
