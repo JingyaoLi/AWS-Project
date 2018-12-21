@@ -3,17 +3,8 @@
     <Modal v-model="modal" :mask-closable="false" title="Discover">
       <Carousel v-if="modal" dots="none" loop autoplay>
         <!--v-if强制让Carousel在Modal后渲染-->
-        <CarouselItem>
-          <div class="message">我啊上达到</div>
-        </CarouselItem>
-        <CarouselItem>
-          <div class="message">2asdsadas</div>
-        </CarouselItem>
-        <CarouselItem>
-          <div class="message">3asdsadasd</div>
-        </CarouselItem>
-        <CarouselItem>
-          <div class="message">4asdasdasda</div>
+        <CarouselItem v-for="(item, index) in discover" :key="index">
+          <div class="message" @click="goto($event, item)">{{item.content}}</div>
         </CarouselItem>
       </Carousel>
     </Modal>
@@ -21,14 +12,15 @@
 </template>
 
 <script>
-import { Modal, Carousel, CarouselItem } from "iview";
+import { Modal, Carousel, CarouselItem, Button } from "iview";
 import { getDiscover } from "../utils/data";
 import { getUserEmail } from "../utils/cognito";
 export default {
   components: {
     Modal,
     Carousel,
-    CarouselItem
+    CarouselItem,
+    Button
   },
   props: ["show"],
   created() {
@@ -36,18 +28,32 @@ export default {
     getDiscover({
       userEmail: getUserEmail()
     }).then(r => {
-      console.log(r.data.body);
+      this.discover = r.data.body;
     });
   },
   data() {
     return {
       modal: null,
-      message: null
+      message: null,
+      discover: []
     };
   },
   watch: {
     show() {
       this.modal = true;
+    }
+  },
+  methods: {
+    goto(event, item) {
+      this.$router.push({
+        path: "/home/partydetails",
+        query: {
+          id: item.partyId
+        }
+      });
+      if(this.$route.query.id){
+        this.$router.go(0); // 当前二级路由页 刷新
+      }
     }
   }
 };

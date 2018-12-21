@@ -146,7 +146,6 @@ export default {
       partyId: this.party,
       userEmail: getUserEmail()
     }).then(r => {
-      console.log(r);
       this.partybody = r["data"]["body"];
       this.category = this.partybody.category.toString();
       this.num = this.partybody.maxNumber.toString();
