@@ -1,6 +1,7 @@
 <template>
   <div>
     <Search></Search>
+    <Button icon="md-add" class="button" type="success" size="large" @click="newParty">New Party</Button>
     <Row>
       <Col span="6" v-for="(item, index) in partylist" :key="index">
         <Card class="card" title="Party Information" icon="ios-options" :padding="0" shadow>
@@ -20,7 +21,6 @@
         </Card>
       </Col>
     </Row>
-    <Button icon="md-add" class="button" type="success" size="large" @click="newParty">New Party</Button>
     <party-info :show="partymodal"></party-info>
   </div>
 </template>

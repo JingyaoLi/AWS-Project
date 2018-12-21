@@ -72,6 +72,7 @@ export default {
   },
   created() {
     this.email = getUserEmail();
+    console.log(this.email);
     getUserInfo({ email: this.email }).then(r => {
       console.log(r);
       if (r["data"]["body"]["name"]) {

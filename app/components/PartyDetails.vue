@@ -57,24 +57,63 @@
           </Cell>
         </CellGroup>
         <div>
-          <Rate show-text allow-half v-model="rateValue" @on-change="rate">
-            <span style="color: #f5a623">{{ rateValue }}</span>
-          </Rate>
+          <Button
+            v-if="showratebtn"
+            icon="ios-star"
+            shape="circle"
+            @click="showratemodel"
+            class="button"
+            type="dashed"
+            size="small"
+            style="margin: 2% 0% 2% 0%"
+          >Rate</Button>
+          <RateModal :rateV="rateValue" :show="showrate" :partyid="partybody.id"></RateModal>
         </div>
         <div>
           <Select v-model="friend2" style="width:50%;margin-bottom:2px" placeholder="Attend User">
-            <Option
-              v-for="(item, index) in friend"
-              :value="item.email"
-              :key="index"
-            >{{ item.name }}</Option>
+            <Option v-for="(item, index) in friend" :value="item.email" :key="index">{{ item.name }}</Option>
           </Select>
-          <Button icon="md-checkmark" shape="circle" @click="follow" class="button" type="info" size="small">Follow</Button>
-          <Button icon="md-close" shape="circle" @click="unfollow" class="button" type="warning" size="small">Unfollow</Button>
+          <Button
+            icon="md-checkmark"
+            shape="circle"
+            @click="follow"
+            class="button"
+            type="info"
+            size="small"
+          >Follow</Button>
+          <Button
+            icon="md-close"
+            shape="circle"
+            @click="unfollow"
+            class="button"
+            type="warning"
+            size="small"
+          >Unfollow</Button>
         </div>
-        <Button icon="md-add" @click="attend" class="button" type="success" size="large">Attend</Button>
-        <Button icon="md-close" @click="cancel" class="button" type="error" size="large">Cancel</Button>
-        <Button icon="md-create" class="button" type="info" size="large" @click="edit">Edit Party</Button>
+        <Button
+          icon="md-add"
+          v-if="!join&&!own&&!showratebtn"
+          @click="attend"
+          class="button"
+          type="success"
+          size="large"
+        >Attend</Button>
+        <Button
+          icon="md-close"
+          v-if="join&&!own&&!showratebtn"
+          @click="cancel"
+          class="button"
+          type="error"
+          size="large"
+        >Cancel</Button>
+        <Button
+          icon="md-create"
+          v-if="own&&!showratebtn"
+          class="button"
+          type="info"
+          size="large"
+          @click="edit"
+        >Edit Party</Button>
         <edit-party :show="partymodal" :party="partybody"></edit-party>
       </Card>
     </Col>
@@ -91,8 +130,15 @@
 
 <script>
 import { getUserEmail } from "../utils/cognito";
-import { getParty, attendParty, cancelParty, rateParty, followUser, unfollowUser } from "../utils/data";
+import {
+  getParty,
+  attendParty,
+  cancelParty,
+  followUser,
+  unfollowUser
+} from "../utils/data";
 import EditParty from "./EditParty.vue";
+import RateModal from "./rateModal.vue";
 import {
   Col,
   Card,
@@ -103,7 +149,6 @@ import {
   Rate,
   Message,
   DatePicker,
-  Row,
   Select,
   Option
 } from "iview";
@@ -116,10 +161,9 @@ export default {
     CellGroup,
     Button,
     EditParty,
-    Rate,
+    RateModal,
     Message,
     DatePicker,
-    Row,
     Select,
     Option
   },
@@ -138,7 +182,11 @@ export default {
       category: null,
       num: null,
       friend: [],
-      friend2: null
+      friend2: null,
+      join: false,
+      own: false,
+      showrate: false,
+      showratebtn: false
     };
   },
   mounted() {
@@ -147,13 +195,16 @@ export default {
       userEmail: getUserEmail()
     }).then(r => {
       this.partybody = r["data"]["body"];
+      this.own = this.partybody.relation;
+      this.join = this.partybody.status;
       this.category = this.partybody.category.toString();
       this.num = this.partybody.maxNumber.toString();
       if (this.partybody.rate) {
-        this.rateValue = this.partybody.rate;
+        this.showratebtn = true;
+        this.rateValue = parseFloat(this.partybody.rate);
       }
       for (let i = 0; i < this.partybody.attendPeople.length; i++) {
-        this.friend.push(this.partybody.attendPeople[i])
+        this.friend.push(this.partybody.attendPeople[i]);
       }
       this.createMap();
     });
@@ -162,18 +213,8 @@ export default {
     edit() {
       this.partymodal = !this.partymodal;
     },
-    rate() {
-      rateParty({
-        partyid: this.partybody.id,
-        userEmail: getUserEmail(),
-        ratingpoints: this.rateValue,
-        ratingreview: "N/A"
-      }).then(r => {
-        Message.success({
-          content: "Rate Successully",
-          duration: 3
-        });
-      });
+    showratemodel(){
+      this.showrate = !this.showrate;
     },
     attend() {
       attendParty({
@@ -184,6 +225,7 @@ export default {
           content: "Attend Successully",
           duration: 3
         });
+        this.join = !this.join;
       });
     },
     cancel() {
@@ -195,41 +237,42 @@ export default {
           content: "Cancel Successully",
           duration: 3
         });
+        this.join = !this.join;
       });
     },
-    follow(){
-      if(!this.friend2){
+    follow() {
+      if (!this.friend2) {
         Message.warning({
-          content:'Please select a user',
+          content: "Please select a user",
           duration: 3
         });
-      }else{
+      } else {
         followUser({
-          fromEmail:getUserEmail(),
+          fromEmail: getUserEmail(),
           toEmail: this.friend2
-        }).then(r=>{
+        }).then(r => {
           Message.success({
-          content: r['data']['body'],
-          duration: 3
-        });
+            content: r["data"]["body"],
+            duration: 3
+          });
         });
       }
     },
-    unfollow(){
-      if(!this.friend2){
+    unfollow() {
+      if (!this.friend2) {
         Message.warning({
-          content:'Please select a user',
+          content: "Please select a user",
           duration: 3
         });
-      }else{
+      } else {
         unfollowUser({
-          fromEmail:getUserEmail(),
+          fromEmail: getUserEmail(),
           toEmail: this.friend2
-        }).then(r=>{
+        }).then(r => {
           Message.success({
-          content: r['data']['body'],
-          duration: 3
-        });
+            content: r["data"]["body"],
+            duration: 3
+          });
         });
       }
     },
