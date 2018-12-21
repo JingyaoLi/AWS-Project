@@ -21,9 +21,6 @@
       <MenuItem name="3-1" @click.native="toDiscover">
         <Icon type="md-chatbubbles"/>Discover
       </MenuItem>
-      <MenuItem name="3-1" @click.native="toDiscover">
-        <Icon type="md-chatbubbles"/>Discover
-      </MenuItem>
       <MenuItem name="4-1" @click.native="signout">
         <Icon type="md-log-out"/>Sign out
       </MenuItem>
