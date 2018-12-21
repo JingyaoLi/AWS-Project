@@ -80,3 +80,9 @@ export function getDiscover(param){
         params: param
     });
 }
+
+export function searchPartyDb(param){
+    return axios.get('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/search', {
+        params: param
+    })
+}

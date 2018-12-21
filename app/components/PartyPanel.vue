@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Search></Search>
+    <Search @search_="searchParty"></Search>
     <Button icon="md-add" class="button" type="success" size="large" @click="newParty">New Party</Button>
     <Row>
       <Col span="6" v-for="(item, index) in partylist" :key="index">
@@ -28,8 +28,8 @@
 <script>
 import Search from "./search.vue";
 import PartyInfo from "./PartyInfo.vue";
-import { Card, Cell, CellGroup, Col, Button, Row, DatePicker } from "iview";
-import { DisplayHome, getHostParty, getGuestParty } from "../utils/data";
+import { Card, Cell, CellGroup, Col, Button, Row, DatePicker, Message } from "iview";
+import { DisplayHome, getHostParty, getGuestParty, searchPartyDb } from "../utils/data";
 import { getUserEmail } from '../utils/cognito';
 
 export default {
@@ -42,7 +42,8 @@ export default {
     Button,
     Row,
     PartyInfo,
-    DatePicker
+    DatePicker,
+    Message
   },
   created() {
       this.changerouter(this.$route.query.type);
@@ -89,6 +90,18 @@ export default {
               this.partylist = r["data"]["partyLists"];
             });
           }
+    },
+    searchParty(val){
+      if(!val.keyword || !val.type){
+        Message.warning({
+          content: 'Please enter both keyword and category!',
+          duration:3
+        });
+      }else{
+        searchPartyDb(val).then(r=>{
+          this.partylist = r["data"]["partyLists"];
+        });
+      }
     }
   },
   watch:{
