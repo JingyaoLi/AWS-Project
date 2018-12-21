@@ -62,6 +62,8 @@ export default {
     this.modal2 = this.show;
     this.email = getUserEmail();
     this.partybody = this.party;
+    this.partybody.startTime = new Date(this.partybody.startTime);
+    this.partybody.endTime = new Date(this.partybody.endTime);
   },
   props: ["show", "party"],
   data() {
@@ -80,7 +82,7 @@ export default {
     }
   },
   methods: {
-    updateParty() {
+    updateParty() { // new Date(this.partybody.startTime - this.partybody.startTime.getTimezoneOffset() * 60000),
       let param = {
         partyId: this.partybody.id,
         hostEmail: this.partybody.hostEmail,

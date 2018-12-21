@@ -24,7 +24,6 @@
     <party-info :show="partymodal"></party-info>
   </div>
 </template>
-
 <script>
 import Search from "./search.vue";
 import PartyInfo from "./PartyInfo.vue";
@@ -73,13 +72,13 @@ export default {
               getHostParty({
                   hostEmail: getUserEmail()
                 }).then(r=>{
-                  this.partylist = r["data"]["partyLists"];
+                  this.partylist = this.changeDate(r["data"]["partyLists"]);
                 });
             }else{
                 getGuestParty({
                   guestEmail: getUserEmail()
                 }).then(r => {
-                  this.partylist = r["data"]["partyLists"];
+                  this.partylist = this.changeDate(r["data"]["partyLists"]);
                 });
             }
           }else{
@@ -87,7 +86,7 @@ export default {
               type: "name",
               keyword: ""
             }).then(r => {
-              this.partylist = r["data"]["partyLists"];
+              this.partylist = this.changeDate(r["data"]["partyLists"]);
             });
           }
     },
@@ -99,9 +98,16 @@ export default {
         });
       }else{
         searchPartyDb(val).then(r=>{
-          this.partylist = r["data"]["partyLists"];
+          this.partylist = this.changeDate(r["data"]["partyLists"]);
         });
       }
+    },
+    changeDate(partylist){
+      for(let i = 0; i < partylist.length; i++){
+          partylist[i].startTime = new Date(partylist[i].startTime);
+          partylist[i].endTime = new Date(partylist[i].endTime);
+      }
+      return partylist;
     }
   },
   watch:{

@@ -86,3 +86,7 @@ export function searchPartyDb(param){
         params: param
     })
 }
+
+export function deleteParty(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/deleteparty', param);
+}

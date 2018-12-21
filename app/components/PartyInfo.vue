@@ -126,7 +126,7 @@ export default {
       let param = {
         hostEmail: this.email,
         name: this.name,
-        startTime: this.startdatetime,
+        startTime:this.startdatetime,
         endTime: this.enddatetime,
         maxNumber: this.num,
         address: this.location,
@@ -134,7 +134,6 @@ export default {
         category: this.hobby
       };
       createPartyDb(param).then(r => {
-        console.log(r);
         Message.success({
           content: "Create party successfully",
           duration: 3

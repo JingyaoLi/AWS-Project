@@ -114,6 +114,14 @@
           size="large"
           @click="edit"
         >Edit Party</Button>
+        <Button
+          icon="md-close"
+          v-if="own"
+          class="button"
+          type="error"
+          size="large"
+          @click="deleted"
+        >Delete Party</Button>
         <edit-party :show="partymodal" :party="partybody"></edit-party>
       </Card>
     </Col>
@@ -135,7 +143,8 @@ import {
   attendParty,
   cancelParty,
   followUser,
-  unfollowUser
+  unfollowUser,
+  deleteParty
 } from "../utils/data";
 import EditParty from "./EditParty.vue";
 import RateModal from "./rateModal.vue";
@@ -199,7 +208,9 @@ export default {
       this.join = this.partybody.status;
       this.category = this.partybody.category.toString();
       this.num = this.partybody.maxNumber.toString();
-      if (this.partybody.rate) {
+      this.partybody.startTime = new Date(this.partybody.startTime);
+      this.partybody.endTime = new Date(this.partybody.endTime);
+      if (new Date(this.partybody.endTime) < new Date()) {
         this.showratebtn = true;
         this.rateValue = parseFloat(this.partybody.rate);
       }
@@ -213,7 +224,7 @@ export default {
     edit() {
       this.partymodal = !this.partymodal;
     },
-    showratemodel(){
+    showratemodel() {
       this.showrate = !this.showrate;
     },
     attend() {
@@ -275,6 +286,16 @@ export default {
           });
         });
       }
+    },
+    deleted() {
+      deleteParty({
+        'partyId': this.partybody.id
+      }).then(r => {
+        Message.success({
+          content:'Delete successfully',
+          duration: 3
+        });
+      });
     },
     createMap() {
       this.initialize();
