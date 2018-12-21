@@ -21,6 +21,24 @@
           placeholder="password"
         />
         <Input
+          v-model="phonenumber"
+          class="input"
+          size="large"
+          type="text"
+          placeholder="phone number"
+          v-show="signup_footer"
+        />
+        <RadioGroup class="input" v-model="gender" v-show="signup_footer">
+          <Radio label="male">
+            <Icon type="md-male"/>
+            <span>Boy</span>
+          </Radio>
+          <Radio label="female">
+            <Icon type="md-female"/>
+            <span>Girl</span>
+          </Radio>
+        </RadioGroup>
+        <Input
           v-model="confirmation"
           class="input"
           size="large"
@@ -85,7 +103,7 @@ import {
   getCurrentUser,
   getUserEmail
 } from "../utils/cognito";
-import { Modal, Icon, Button, Input, Message } from "iview";
+import { Modal, Icon, Button, Input, Message, RadioGroup, Radio } from "iview";
 import { SignUpDb } from "../utils/data";
 
 export default {
@@ -94,7 +112,9 @@ export default {
     Icon,
     Button,
     Input,
-    Message
+    Message,
+    RadioGroup,
+    Radio
   },
   created() {
     getCurrentUser()
@@ -120,7 +140,9 @@ export default {
       password: null,
       confirmation: null,
       confir: false,
-      confirbtn: false
+      confirbtn: false,
+      phonenumber: null,
+      gender: null
     };
   },
   methods: {
@@ -151,7 +173,14 @@ export default {
           });
           SignUpDb({
             userName: this.name,
-            userEmail: this.email
+            userEmail: this.email,
+            phone_number:this.phonenumber,
+            gender: this.gender
+          }).then(r=>{
+            Message.success({
+              content: r.data.body,
+              duration:3
+            });
           });
           this.confir = true;
           this.confirbtn = true;

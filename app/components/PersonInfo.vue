@@ -18,6 +18,7 @@
           <span>Girl</span>
         </Radio>
       </RadioGroup>
+      <Input v-model="phone_number" class="input" size="large" placeholder="phone"/>
       <div>
         <Select
           class="input"
@@ -87,6 +88,9 @@ export default {
       if (r["data"]["body"]["birthday"]) {
         this.birthday = r["data"]["body"]["birthday"];
       }
+      if (r["data"]["body"]["phone_number"]) {
+        this.phone_number = r["data"]["body"]["phone_number"];
+      }
     });
   },
   props: ["show"],
@@ -123,7 +127,8 @@ export default {
         }
       ],
       hobby: [],
-      birthday: null
+      birthday: null,
+      phone_number: null
     };
   },
   methods: {
@@ -134,7 +139,7 @@ export default {
         gender: this.gender,
         hobby: this.hobby,
         birthday: this.birthday,
-        phone_number: 'N/A'
+        phone_number: this.phone_number
       };
       updataUserInfo(params).then(r => {
         Message.success({
