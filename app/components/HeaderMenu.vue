@@ -19,8 +19,14 @@
         </MenuItem>
       </Submenu>
       <MenuItem name="3-1" @click.native="toDiscover">
-          <Icon type="md-chatbubbles"/>Discover
-        </MenuItem>
+        <Icon type="md-chatbubbles"/>Discover
+      </MenuItem>
+      <MenuItem name="3-1" @click.native="toDiscover">
+        <Icon type="md-chatbubbles"/>Discover
+      </MenuItem>
+      <MenuItem name="4-1" @click.native="signout">
+        <Icon type="md-log-out"/>Sign out
+      </MenuItem>
     </Menu>
     <person-info :show="personmodal"></person-info>
     <discover :show="discovermodal"></discover>
@@ -30,7 +36,7 @@
 <script>
 import { Menu, MenuItem, Icon, Submenu, MenuGroup } from "iview";
 import PersonInfo from "./PersonInfo.vue";
-import discover from './discover.vue';
+import discover from "./discover.vue";
 
 export default {
   components: {
@@ -72,8 +78,12 @@ export default {
         }
       });
     },
-    toDiscover(){
-      this.discovermodal = !this.discovermodal
+    toDiscover() {
+      this.discovermodal = !this.discovermodal;
+    },
+    signout(){
+      localStorage.clear();
+      this.$router.go(0);
     }
   }
 };
