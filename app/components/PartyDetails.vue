@@ -61,6 +61,17 @@
             <span style="color: #f5a623">{{ rateValue }}</span>
           </Rate>
         </div>
+        <div>
+          <Select v-model="friend2" style="width:50%;margin-bottom:2px" placeholder="Attend User">
+            <Option
+              v-for="(item, index) in friend"
+              :value="item.email"
+              :key="index"
+            >{{ item.name }}</Option>
+          </Select>
+          <Button icon="md-checkmark" shape="circle" @click="follow" class="button" type="info" size="small">Follow</Button>
+          <Button icon="md-close" shape="circle" @click="unfollow" class="button" type="warning" size="small">Unfollow</Button>
+        </div>
         <Button icon="md-add" @click="attend" class="button" type="success" size="large">Attend</Button>
         <Button icon="md-close" @click="cancel" class="button" type="error" size="large">Cancel</Button>
         <Button icon="md-create" class="button" type="info" size="large" @click="edit">Edit Party</Button>
@@ -80,7 +91,7 @@
 
 <script>
 import { getUserEmail } from "../utils/cognito";
-import { getParty, attendParty, cancelParty, rateParty } from "../utils/data";
+import { getParty, attendParty, cancelParty, rateParty, followUser, unfollowUser } from "../utils/data";
 import EditParty from "./EditParty.vue";
 import {
   Col,
@@ -92,7 +103,9 @@ import {
   Rate,
   Message,
   DatePicker,
-  Row
+  Row,
+  Select,
+  Option
 } from "iview";
 export default {
   components: {
@@ -106,7 +119,9 @@ export default {
     Rate,
     Message,
     DatePicker,
-    Row
+    Row,
+    Select,
+    Option
   },
   created() {
     if (!getUserEmail()) {
@@ -122,8 +137,8 @@ export default {
       partybody: {},
       category: null,
       num: null,
-      lag: 39.983245,
-      lng: 116.315509
+      friend: [],
+      friend2: null
     };
   },
   mounted() {
@@ -131,11 +146,15 @@ export default {
       partyId: this.party,
       userEmail: getUserEmail()
     }).then(r => {
+      console.log(r);
       this.partybody = r["data"]["body"];
       this.category = this.partybody.category.toString();
       this.num = this.partybody.maxNumber.toString();
       if (this.partybody.rate) {
         this.rateValue = this.partybody.rate;
+      }
+      for (let i = 0; i < this.partybody.attendPeople.length; i++) {
+        this.friend.push(this.partybody.attendPeople[i])
       }
       this.createMap();
     });
@@ -178,6 +197,42 @@ export default {
           duration: 3
         });
       });
+    },
+    follow(){
+      if(!this.friend2){
+        Message.warning({
+          content:'Please select a user',
+          duration: 3
+        });
+      }else{
+        followUser({
+          fromEmail:getUserEmail(),
+          toEmail: this.friend2
+        }).then(r=>{
+          Message.success({
+          content: r['data']['body'],
+          duration: 3
+        });
+        });
+      }
+    },
+    unfollow(){
+      if(!this.friend2){
+        Message.warning({
+          content:'Please select a user',
+          duration: 3
+        });
+      }else{
+        unfollowUser({
+          fromEmail:getUserEmail(),
+          toEmail: this.friend2
+        }).then(r=>{
+          Message.success({
+          content: r['data']['body'],
+          duration: 3
+        });
+        });
+      }
     },
     createMap() {
       this.initialize();

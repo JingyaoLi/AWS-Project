@@ -66,3 +66,17 @@ export function cancelParty(param){
 export function rateParty(param){
     return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/ratingparty', param);
 }
+
+export function followUser(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/followuser', param);
+}
+
+export function unfollowUser(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/unfollow', param);
+}
+
+export function getDiscover(param){
+    return axios.get('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/friendcircle',{
+        params: param
+    });
+}

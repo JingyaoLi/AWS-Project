@@ -18,14 +18,19 @@
           <Icon type="md-contacts"/>Guest
         </MenuItem>
       </Submenu>
+      <MenuItem name="3-1" @click.native="toDiscover">
+          <Icon type="md-chatbubbles"/>Discover
+        </MenuItem>
     </Menu>
     <person-info :show="personmodal"></person-info>
+    <discover :show="discovermodal"></discover>
   </div>
 </template>
 
 <script>
 import { Menu, MenuItem, Icon, Submenu, MenuGroup } from "iview";
 import PersonInfo from "./PersonInfo.vue";
+import discover from './discover.vue';
 
 export default {
   components: {
@@ -34,12 +39,14 @@ export default {
     Icon,
     Submenu,
     MenuGroup,
-    PersonInfo
+    PersonInfo,
+    discover
   },
   data() {
     return {
       theme: "dark",
-      personmodal: false
+      personmodal: false,
+      discovermodal: false
     };
   },
   methods: {
@@ -64,6 +71,9 @@ export default {
           type: "guest"
         }
       });
+    },
+    toDiscover(){
+      this.discovermodal = !this.discovermodal
     }
   }
 };
