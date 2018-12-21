@@ -9,8 +9,12 @@
             <Cell title="Party owner" :label="item.hostEmail"/>
             <Cell title="Short discription" :label="item.discription"/>
             <Cell title="Location" :label="item.placeName"/>
-            <Cell title="start time" :label="item.startTime"/>
-            <Cell title="end time" :label="item.endTime"/>
+            <Cell title="Start time"/>
+            <DatePicker class="picker" type="datetime" disabled v-model="item.startTime" size="small"></DatePicker>
+            </Cell>
+            <Cell title="End time"/>
+            <DatePicker class="picker" type="datetime" disabled v-model="item.endTime" size="small"></DatePicker>
+            </Cell>
             <Cell title="Link" extra="details" @click.native="showPartyDetail($event, item)"/>
           </CellGroup>
         </Card>
@@ -24,8 +28,9 @@
 <script>
 import Search from "./search.vue";
 import PartyInfo from "./PartyInfo.vue";
-import { Card, Cell, CellGroup, Col, Button, Row } from "iview";
-import { DisplayHome } from "../utils/data";
+import { Card, Cell, CellGroup, Col, Button, Row, DatePicker } from "iview";
+import { DisplayHome, getHostParty, getGuestParty } from "../utils/data";
+import { getUserEmail } from '../utils/cognito';
 
 export default {
   components: {
@@ -36,16 +41,11 @@ export default {
     Col,
     Button,
     Row,
-    PartyInfo
+    PartyInfo,
+    DatePicker
   },
   created() {
-    let param = {
-      type: "name",
-      keyword: ""
-    };
-    DisplayHome(param).then(r => {
-      this.partylist = r["data"]["partyLists"];
-    });
+      this.changerouter(this.$route.query.type);
   },
   data() {
     return {
@@ -65,7 +65,36 @@ export default {
           id: item.id
         }
       });
+    },
+    changerouter(querytype){
+      if(querytype){
+            if(querytype === 'host'){
+              getHostParty({
+                  hostEmail: getUserEmail()
+                }).then(r=>{
+                  this.partylist = r["data"]["partyLists"];
+                });
+            }else{
+                getGuestParty({
+                  guestEmail: getUserEmail()
+                }).then(r => {
+                  this.partylist = r["data"]["partyLists"];
+                });
+            }
+          }else{
+            DisplayHome({
+              type: "name",
+              keyword: ""
+            }).then(r => {
+              this.partylist = r["data"]["partyLists"];
+            });
+          }
     }
+  },
+  watch:{
+     $route(nv, ov){
+       this.changerouter(nv.query.type);
+     }
   }
 };
 </script>
@@ -77,6 +106,9 @@ export default {
 .button {
   margin-left: 45%;
   margin-top: 6px;
+}
+.picker{
+  padding-left: 3%;
 }
 </style>
 

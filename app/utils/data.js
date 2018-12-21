@@ -38,3 +38,31 @@ export function getParty(param){
         params: param
     });
 }
+
+export function getHostParty(param){
+    return axios.get('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/gethostedparties', {
+        params: param
+    });
+}
+
+export function getGuestParty(param){
+    return axios.get('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/getattendedparties', {
+        params: param
+    });
+}
+
+export function updatePartyDb(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/updateparty', param);
+}
+
+export function attendParty(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/attendparty', param);
+}
+
+export function cancelParty(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/cancelparty', param);
+}
+
+export function rateParty(param){
+    return axios.post('https://72xl3f831d.execute-api.us-east-1.amazonaws.com/prod1/ratingparty', param);
+}

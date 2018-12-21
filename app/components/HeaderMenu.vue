@@ -50,10 +50,20 @@ export default {
       this.$router.push("/home");
     },
     toHost() {
-      this.$router.push("/home");
+      this.$router.push({
+        path: "/home",
+        query: {
+          type: "host"
+        }
+      });
     },
     toGuest() {
-      this.$router.push("/home");
+      this.$router.push({
+        path: "/home",
+        query: {
+          type: "guest"
+        }
+      });
     }
   }
 };

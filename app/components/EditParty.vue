@@ -4,32 +4,32 @@
       v-model="modal2"
       :mask-closable="false"
       title="Edit Party Information"
-      @on-ok="createParty"
+      @on-ok="updateParty"
     >
-      <Input v-model="name" class="input" size="large" placeholder="Name"/>
+      <Input v-model="partybody.partyName" class="input" size="large" placeholder="Name"/>
       <DatePicker
-        v-model="startdatetime"
+        v-model="partybody.startTime"
         class="input"
         type="datetime"
         placeholder="Start date"
         style="width:300px;padding-left:1px"
       ></DatePicker>
       <DatePicker
-        v-model="enddatetime"
+        v-model="partybody.endTime"
         class="input"
         type="datetime"
         placeholder="End date"
         style="width:300px;padding-left:1px"
       ></DatePicker>
-      <Input v-model="location" class="input" size="large" placeholder="Location"/>
-      <Input v-model="discription" class="input" size="large" placeholder="Discription"/>
+      <Input v-model="partybody.address" class="input" size="large" placeholder="Location"/>
+      <Input v-model="partybody.discription" class="input" size="large" placeholder="Discription"/>
     </Modal>
   </div>
 </template>
 
 <script>
 import { getUserEmail } from "../utils/cognito";
-import { testApi } from "../utils/data";
+import { updatePartyDb } from "../utils/data";
 
 import {
   Modal,
@@ -41,7 +41,8 @@ import {
   Select,
   Option,
   DatePicker,
-  TimePicker
+  TimePicker,
+  Message
 } from "iview";
 
 export default {
@@ -60,37 +61,41 @@ export default {
   created() {
     this.modal2 = this.show;
     this.email = getUserEmail();
+    this.partybody = this.party;
   },
-  props: ["show"],
+  props: ["show", "party"],
   data() {
     return {
       modal2: false,
-      name: null,
-      startdatetime: "2019-01-01T18:00:00.000Z",
-      enddatetime: null,
-      num: null,
-      location: null,
-      discription: null,
       email: null,
+      partybody: null
     };
   },
   watch: {
     show() {
       this.modal2 = true;
+    },
+    party() {
+      this.partybody = this.party;
     }
   },
   methods: {
-    createParty() {
+    updateParty() {
       let param = {
-        email: this.email,
-        name: this.name,
-        startdatetime: this.startdatetime,
-        enddatetime: this.enddatetime,
-        num: this.num,
-        location: this.num,
-        discription: this.discription
-      };
-      console.log(param);
+        partyId: this.partybody.id,
+        hostEmail: this.partybody.hostEmail,
+        name: this.partybody.partyName,
+        startTime: this.partybody.startTime,
+        endTime: this.partybody.endTime,
+        address: this.partybody.address,
+        discription: this.partybody.discription
+      }
+      updatePartyDb(param).then(r => {
+        Message.success({
+          content: 'update successfully!',
+          duration: 3
+        });
+      });
     }
   }
 };
