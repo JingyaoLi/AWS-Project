@@ -9,7 +9,7 @@
 3. Kuan Chen kc3422
 4. Guanhua Chen gc2229
 
-###Project S3 Link: https://s3.amazonaws.com/weiphoto/index.html#/
+### Project S3 Link: https://s3.amazonaws.com/weiphoto/index.html#/
 
 #### This app contains
 
@@ -37,27 +37,27 @@
 
 #### Some Screen Shots:
 
-1. Login Page ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/login.png?raw=true]
+1. Login Page ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/login.png?raw=true)
 
-2. Home Page ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/Home.png?raw=true]
+2. Home Page ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Home.png?raw=true)
 
-3. Edit Personal Information ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/Edit%20Personal%20Info.png?raw=true]
+3. Edit Personal Information ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Edit%20Personal%20Info.png?raw=true)
 
 4. Edit Party Information ![]
 
-5. Party Details Page (Host) ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/Party%20detail%20host.png?raw=true]
+5. Party Details Page (Host) ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Party%20detail%20host.png?raw=true)
 
-6. Party Details Page (Guest) ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/party%20detail%20guest.png?raw=true]
+6. Party Details Page (Guest) ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/party%20detail%20guest.png?raw=true)
 
-7. Rate ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/Rate.png?raw=true]
+7. Rate ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Rate.png?raw=true)
 
-8. Discover Page ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/Discover.png?raw=true]
+8. Discover Page ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Discover.png?raw=true)
 
-9. Search Party ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/Search.png?raw=true]
+9. Search Party ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Search.png?raw=true)
 
-10. Follow / Unfollow User ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/follow.png?raw=true]
+10. Follow / Unfollow User ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/follow.png?raw=true)
 
-11. See host / guest ![https://github.com/Wangwei0223/AWS-Project/blob/master/images/options.png?raw=true]
+11. See host / guest ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/options.png?raw=true)
 
 #### For Locally Run:
 
