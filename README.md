@@ -43,7 +43,7 @@
 
 3. Edit Personal Information ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Edit%20Personal%20Info.png?raw=true)
 
-4. Edit Party Information ![]
+4. Edit Party Information ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/edit%20party%20information.png?raw=true)
 
 5. Party Details Page (Host) ![](https://github.com/Wangwei0223/AWS-Project/blob/master/images/Party%20detail%20host.png?raw=true)
 
